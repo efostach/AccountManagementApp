@@ -129,7 +129,7 @@ class ApplicationLogic {
         printInputParametersToCreateDeveloper();
 
         Developer dev = new Developer(scanner.next(), scanner.next(), scanner.next());
-        Account acc = new Account(dev.getID(), scanner.next(), scanner.next());
+        Account acc = new Account(dev.getId(), scanner.next(), scanner.next());
 
         developers.add(dev);
         accounts.add(acc);
@@ -142,7 +142,7 @@ class ApplicationLogic {
 
     private void goToFindDeveloper() {
         if (!developers.isEmpty()) {
-            printInputParameter("ID");
+            printInputParameter("Id");
 
             Iterator iterator = developers.iterator();
             Developer developer;
@@ -150,9 +150,9 @@ class ApplicationLogic {
 
             do {
                 developer = (Developer) iterator.next();
-                String ID = developer.getID().toString();
+                String id = String.valueOf(developer.getId());
                 String input = scanner.next();
-                if (ID.equals(input)) {
+                if (id.equals(input)) {
                     result = true;
                 }
             }
@@ -166,14 +166,14 @@ class ApplicationLogic {
     private void goToDeleteDeveloper() {
         if (!developers.isEmpty()) {
             printElements(developers);
-            printInputParameter("ID");
-            String inputID = scanner.next();
+            printInputParameter("Id");
+            String inputId = scanner.next();
 
             final Developer[] developer = new Developer[1];
 
             developers.forEach(element -> {
-                String developerID = element.getID().toString();
-                if (developerID.equals(inputID)) {
+                String developerId = String.valueOf(element.getId());
+                if (developerId.equals(inputId)) {
                     developer[0] = element;
                 }
             });
@@ -269,7 +269,7 @@ class ApplicationLogic {
     private void goToEditAddress() {
         if (!developers.isEmpty()) {
             printElements(developers);
-            printInputParameter("ID");
+            printInputParameter("Id");
             Developer dev = checkIfDeveloperExists(scanner.next());
 
             if (dev != null) {
@@ -286,7 +286,7 @@ class ApplicationLogic {
     private void goToEditFirstName() {
         if (!developers.isEmpty()) {
             printElements(developers);
-            printInputParameter("ID");
+            printInputParameter("Id");
             Developer dev = checkIfDeveloperExists(scanner.next());
 
             if (dev != null) {
@@ -302,7 +302,7 @@ class ApplicationLogic {
     private void goToEditLastName() {
         if (!developers.isEmpty()) {
             printElements(developers);
-            printInputParameter("ID");
+            printInputParameter("Id");
             Developer dev = checkIfDeveloperExists(scanner.next());
 
             if (dev != null) {
@@ -318,14 +318,14 @@ class ApplicationLogic {
     private void goToEditTitle() {
         if (!developers.isEmpty()) {
             printElements(developers);
-            printInputParameter("ID");
-            String input = scanner.next();
+            printInputParameter("Id");
+            String inputId = scanner.next();
 
-            if (checkIfDeveloperExists(input) != null) {
+            if (checkIfDeveloperExists(inputId) != null) {
                 accounts.forEach(element -> {
-                    String ID = element.getID().toString();
+                    String id = String.valueOf(element.getId());
 
-                    if (ID.equals(input)) {
+                    if (id.equals(inputId)) {
                         printInputParameter("Title");
                         element.setTitle(scanner.next());
                     }
@@ -340,14 +340,14 @@ class ApplicationLogic {
     private void goToEditData() {
         if (!developers.isEmpty()) {
             printElements(developers);
-            printInputParameter("ID");
-            String input = scanner.next();
+            printInputParameter("Id");
+            String inputId = scanner.next();
 
-            if (checkIfDeveloperExists(input) != null) {
+            if (checkIfDeveloperExists(inputId) != null) {
                 accounts.forEach(element -> {
-                    String ID = element.getID().toString();
+                    String id = String.valueOf(element.getId());
 
-                    if (ID.equals(input)) {
+                    if (id.equals(inputId)) {
                         printInputParameter("Data");
                         element.setData(scanner.next());
                     }
@@ -362,14 +362,14 @@ class ApplicationLogic {
     private void goToEditAccountStatus() {
         if (!developers.isEmpty()) {
             printElements();
-            printInputParameter("ID");
-            String input = scanner.next();
+            printInputParameter("Id");
+            String inputId = scanner.next();
 
-            if (checkIfDeveloperExists(input) != null) {
+            if (checkIfDeveloperExists(inputId) != null) {
                 accounts.forEach(element -> {
-                    String ID = element.getID().toString();
+                    String id = String.valueOf(element.getId());
 
-                    if (ID.equals(input)) {
+                    if (id.equals(inputId)) {
                         printAccountStatus();
                         printInputParameter("Account Status");
                         switch(scanner.next()) {
@@ -398,19 +398,19 @@ class ApplicationLogic {
     private void goToAddDeveloperSkill() {
         if (!developers.isEmpty()) {
             printElements();
-            printInputParameter("Developer ID");
+            printInputParameter("Developer Id");
 
             Developer dev = checkIfDeveloperExists(scanner.next());
 
             if (dev != null) {
                 if (!skills.isEmpty()) {
                     printElements(skills);
-                    printInputParameter("Skill ID");
+                    printInputParameter("Skill Id");
 
-                    String inputID = scanner.next();
+                    String inputId = scanner.next();
 
-                    if (null != checkIfSkillExists(inputID)) {
-                        dev.setSkillSet(Integer.valueOf(inputID));
+                    if (null != checkIfSkillExists(inputId)) {
+                        dev.setSkillSet(Integer.valueOf(inputId));
                         writeDev.writeDataToFile(developers);
                         printElements(developers);
                     } else
@@ -426,17 +426,20 @@ class ApplicationLogic {
     private void goToDeleteDeveloperSkill() {
         if (!developers.isEmpty()) {
             printElements();
-            printInputParameter("Developer ID");
+            printInputParameter("Developer Id");
 
             Developer dev = checkIfDeveloperExists(scanner.next());
 
             if (dev != null) {
                 if (!skills.isEmpty()) {
-                    System.out.println(dev.getSkillSet());
-                    printInputParameter("Skill ID");
-                    String skillId = scanner.next();
-                    if (checkIfSkillExists(skillId) != null) {
-                        dev.getSkillSet().remove(Integer.valueOf(skillId));
+
+                    printElements(dev.getSkillSet());
+                    printInputParameter("Skill Id");
+
+                    String inputId = scanner.next();
+
+                    if (checkIfSkillExists(inputId) != null) {
+                        dev.getSkillSet().remove(Integer.valueOf(inputId));
                         writeDev.writeDataToFile(developers);
                         printElements(developers);
                     } else
@@ -455,7 +458,8 @@ class ApplicationLogic {
 
         do {
             developer = (Developer) iterator.next();
-            if ((developer.getID().toString()).equals(input)) {
+            String id = String.valueOf(developer.getId());
+            if (id.equals(input)) {
                 return developer;
             }
         }
@@ -464,14 +468,14 @@ class ApplicationLogic {
         return null;
     }
 
-    private Skill checkIfSkillExists(String input) {
+    private Skill checkIfSkillExists(String value) {
         Iterator iterator = skills.iterator();
         Skill skill;
 
         do {
             skill = (Skill) iterator.next();
-            String ID = skill.getID().toString();
-            if (ID.equals(input)) {
+            String id = String.valueOf(skill.getId());
+            if (id.equals(value)) {
                 return skill;
             }
         }

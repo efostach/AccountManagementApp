@@ -5,18 +5,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Skill implements Serializable {
-    private Integer ID;
-    private String name;
-    private static Integer maxID = 0;
     public static Set<Skill> skills = new HashSet<>();
+    private static Integer counerId = 0;
+    private Integer id;
+    private String name;
+
 
     public Skill(String name){
-        this.ID = ++maxID;
+        this.id = ++counerId;
         this.name = name;
     }
 
-    public Integer getID(){
-        return this.ID;
+    public Integer getId(){
+        return this.id;
     }
 
     public String getName(){
@@ -25,7 +26,7 @@ public class Skill implements Serializable {
 
     @Override
     public String toString(){
-        return new StringBuilder().append("\n").append("ID: ").append(ID).append("   ")
+        return new StringBuilder().append("\n").append("Id: ").append(id).append("   ")
                 .append("Name: ").append(name).append("   ").toString();
     }
 }

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Account implements Serializable {
-    private Integer ID;
+    private Integer id;
     private String title;
     private String data;
     private accountStatus status;
@@ -13,18 +13,18 @@ public class Account implements Serializable {
     public static Set<Account> accounts = new HashSet<>();
 
     public Account(Integer id, String title, String data) {
-        this.ID = id;
+        this.id = id;
         this.title = title;
         this.data = data;
         this.status = accountStatus.ACTIVE;
     }
 
-    public Integer getID(){
-        return this.ID;
+    public Integer getId(){
+        return this.id;
     }
 
     public String getStatus(){
-        return this.status.toString();
+        return String.valueOf(this.status);
     }
 
     public String getTitle(){
@@ -54,7 +54,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString(){
-        return new StringBuilder().append("\n").append("ID: ").append(ID).append("\t")
+        return new StringBuilder().append("\n").append("Id: ").append(id).append("\t")
                 .append("Title: ").append(title).append("\t")
                 .append("Data: ").append(data).append("\t")
                 .append("Status: ").append(status).toString();

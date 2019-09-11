@@ -5,23 +5,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Developer implements Serializable {
-    private Integer ID;
-    private static Integer maxID = 0;
+    public static Set<Developer> developers = new HashSet<>();
+    private static Integer counterId = 0;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String address;
     private Set<Integer> skillSet = new HashSet<>();
-    public static Set<Developer> developers = new HashSet<>();
+
 
     public Developer(String firstName, String lastName, String address){
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.ID = ++maxID;
+        this.id = ++counterId;
     }
 
-    public Integer getID(){
-        return this.ID;
+    public Integer getId(){
+        return this.id;
     }
 
     public String getFullName(){
@@ -50,7 +51,7 @@ public class Developer implements Serializable {
 
     @Override
     public String toString(){
-        return new StringBuilder().append("\n").append("ID: ").append(ID).append("\t")
+        return new StringBuilder().append("\n").append("Id: ").append(id).append("\t")
                 .append("Full Name: ").append(firstName).append(" ").append(lastName).append("\t")
                 .append("Address: ").append(address).append("\t")
                 .append("SkillSetIDs: ").append(skillSet).toString();

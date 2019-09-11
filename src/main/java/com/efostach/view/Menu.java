@@ -68,9 +68,8 @@ public abstract class Menu {
     }
 
     public static void printCreatedSkill(Skill skill) {
-        System.out.println("Skill '" + skill.getName() + "' successfully created with ID = " + skill.getID());
+        System.out.println("Skill '" + skill.getName() + "' successfully created with ID = " + skill.getId());
     }
-
 
     public static void printWrongSelection(){
         System.out.println("Oops, it's wrong value.\n");
@@ -81,7 +80,7 @@ public abstract class Menu {
     }
 
     public static void printCreatedDeveloper(Developer dev) {
-        System.out.println("Developer '" + dev.getFullName() + "' successfully created with ID = " + dev.getID());
+        System.out.println("Developer '" + dev.getFullName() + "' successfully created with ID = " + dev.getId());
     }
 
     public static void printRemovedObject(){
@@ -108,7 +107,7 @@ public abstract class Menu {
                 Iterator second = accounts.iterator();
                 while (second.hasNext()) {
                     acc = (Account) second.next();
-                    if (dev.getID().equals(acc.getID())) {
+                    if (dev.getId().equals(acc.getId())) {
                         System.out.print(dev.toString() + "\tTitle: " + acc.getTitle() + "\tStatus: " + acc.getStatus());
                     }
                 }
