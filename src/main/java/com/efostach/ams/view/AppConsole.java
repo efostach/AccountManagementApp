@@ -25,25 +25,6 @@ public class AppConsole {
         System.out.println("5. Go Back\n");
     }
 
-    public static void printEditDeveloperSubMenu() {
-        System.out.println("\nChoose necessary operation:");
-        System.out.println("1. Update Skills");
-        System.out.println("2. Update Address");
-        System.out.println("3. Update First Name");
-        System.out.println("4. Update Last Name");
-        System.out.println("5. Update Title");
-        System.out.println("6. Update Data");
-        System.out.println("7. Update Account Status");
-        System.out.println("8. Go Back\n");
-    }
-
-    public static void printEditDeveloperSkillSubMenu() {
-        System.out.println("\nChoose necessary operation:");
-        System.out.println("1. Assign Skill to Developer");
-        System.out.println("2. Remove Skill from Developer");
-        System.out.println("3. Go Back\n");
-    }
-
     public static void printSkillSubGeneralMenu() {
         System.out.println("\nChoose necessary operation:");
         System.out.println("1. Show All Skills");
@@ -160,78 +141,4 @@ public class AppConsole {
             }
         }
     }
-
-
-
-/*
-
-
-
-    public static void printInputParametersToCreateDeveloper(){
-        System.out.println("\nEnter First Name, Last Name, Address, Title, Data:");
-    }
-
-    public static void printCreatedSkill(Skill skill) {
-        System.out.println("Skill '" + skill.getName() + "' successfully created with ID = " + skill.getId());
-    }
-
-
-
-    public static void printAccountStatus(){
-        System.out.println("1 - ACTIVE, 2 - BANNED, 3 - DELETED");
-    }
-
-    public static void printCreatedDeveloper(Developer dev) {
-        System.out.println("Developer '" + dev.getFullName() + "' successfully created with ID = " + dev.getId());
-    }
-
-    public static void printRemovedObject(){
-        System.out.println("Element successfully removed.");
-    }
-
-    public static void printElements(Set elements){
-        if(!elements.isEmpty()) {
-            elements.forEach(System.out::println);
-        } else
-            System.out.println("No object exists.");
-    }
-
-    public static void printElements(){
-        if(!developers.isEmpty() && !accounts.isEmpty()) {
-            Iterator first = developers.iterator();
-
-            Developer dev;
-            Account acc;
-
-            while (first.hasNext()) {
-                dev = (Developer) first.next();
-
-                Iterator second = accounts.iterator();
-                while (second.hasNext()) {
-                    acc = (Account) second.next();
-                    if (dev.getId().equals(acc.getId())) {
-                        System.out.print(dev.toString() + "\tTitle: " + acc.getTitle() + "\tStatus: " + acc.getStatus());
-                    }
-                }
-            }
-
-        } else
-            System.out.println("No object exists.");
-    }
-
-    public static void printSearchResult(Boolean result){
-        if (result){
-            System.out.println("Object exists.");
-        } else
-            System.out.println("Object doesn't exist.");
-    }
-
-    public static void printNoElementsExist(String elementName){
-        System.out.println("No " + elementName + " exists.");
-    }
-
-    public static void printNotFoundElement(String elementName){
-        System.out.println(elementName + " not found.");
-    }
-*/
 }
