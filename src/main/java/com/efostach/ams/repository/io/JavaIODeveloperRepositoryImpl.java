@@ -15,29 +15,25 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     private static String file = "src/main/resources/files/developer.txt";
 
-    public Developer getById(Integer id) {
+    public Developer getById(Integer id) throws FileNotFoundException {
         Iterator iterator = stringToDeveloper().iterator();
         Developer result = null;
         while (iterator.hasNext()) {
             Developer dev = (Developer) iterator.next();
-            if (id == dev.getId()) {
+            if (id.equals(dev.getId())) {
                 result = dev;
             }
         }
         return result;
     }
 
-    public List<Developer> getAll() {
+    public List<Developer> getAll() throws FileNotFoundException {
         return stringToDeveloper();
     }
 
-    public Developer create(Developer developer) {
-        try {
-            developer.setId(getIncrementedId(file));
-            writeDataToFile(file, developer.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Developer create(Developer developer) throws IOException {
+        developer.setId(getIncrementedId(file));
+        writeDataToFile(file, developer.toString());
         return developer;
     }
 
@@ -45,14 +41,14 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
         return null;
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id) throws FileNotFoundException {
         Iterator iterator = stringToDeveloper().iterator();
 
         try {
             clearFile(file);
             while (iterator.hasNext()) {
                 Developer dev = (Developer) iterator.next();
-                if (id != dev.getId()) {
+                if (!id.equals(dev.getId())) {
                     writeDataToFile(file, dev.toString());
                 }
             }
@@ -61,15 +57,9 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
         }
     }
 
-    private List<Developer> stringToDeveloper() {
+    private List<Developer> stringToDeveloper() throws FileNotFoundException {
         List<Developer> developerSet = new ArrayList<>();
-        Iterator iterator = null;
-
-        try {
-            iterator = readDataFromFile(file).iterator();
-        } catch (FileNotFoundException e) {
-            new FileNotFoundException("File not found : " + e);
-        }
+        Iterator iterator = readDataFromFile(file).iterator();
 
         while (iterator.hasNext()) {
             String element = (String) iterator.next();

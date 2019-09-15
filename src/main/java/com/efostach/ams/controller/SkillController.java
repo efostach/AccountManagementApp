@@ -1,50 +1,72 @@
 package com.efostach.ams.controller;
 
+import com.efostach.ams.controller.exceptions.EmptyFileException;
+import com.efostach.ams.controller.exceptions.InvalidValueException;
+import com.efostach.ams.controller.exceptions.ObjectNotFoundException;
+import com.efostach.ams.controller.exceptions.OperationFailException;
 import com.efostach.ams.model.Skill;
 import com.efostach.ams.repository.io.JavaIOSkillsRepositoryImpl;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public class SkillController {
 
     private JavaIOSkillsRepositoryImpl ioSkills = new JavaIOSkillsRepositoryImpl();
 
-    public List<Skill> showSkills() throws Exception {
-        List<Skill> listSkills = ioSkills.getAll();
-        if (ioSkills.getAll().isEmpty()) {
-            throw new Exception("No skills exist.");
-        } else
-            return listSkills;
+    public List<Skill> showSkills() throws EmptyFileException {
+        List<Skill> listSkills = null;
+        try {
+            listSkills = ioSkills.getAll();
+            if (ioSkills.getAll().isEmpty())
+                throw new EmptyFileException("No skills exist.");
+        } catch (FileNotFoundException e) {
+            throw new EmptyFileException("No skills exist.");
+        }
+        return listSkills;
     }
 
-    public Skill findSkillById(Integer id) throws Exception {
+    public Skill findSkillById(Integer id) throws InvalidValueException, ObjectNotFoundException, OperationFailException {
         if (id < 0) {
-            throw new Exception("Invalid id value.");
+            throw new InvalidValueException("Invalid id value.");
         } else {
-            Skill result = ioSkills.getById(id);
-            if (result == null) {
-                throw new Exception("Skill not found.");
-            } else
-                return result;
+            Skill result = null;
+            try {
+                result = ioSkills.getById(id);
+                if (result == null) {
+                    throw new ObjectNotFoundException("Skill not found.");
+                }
+            } catch (FileNotFoundException e) {
+                throw new OperationFailException("Skill failed to be found.");
+            }
+            return result;
         }
     }
 
-    public Skill createSkill(String name) throws Exception {
+    public Skill createSkill(String name) throws OperationFailException {
         Skill skill = new Skill();
         skill.setName(name);
 
-        Skill createdSkill = ioSkills.create(skill);
+        Skill createdSkill;
+        try {
+            createdSkill = ioSkills.create(skill);
+        } catch (IOException e) {
+            throw new OperationFailException("Skill failed to be created.");
+        }
+        return createdSkill;
 
-        if (createdSkill == null) {
-            throw new Exception("Skill can't be created.");
-        } else
-            return createdSkill;
     }
 
-    public void deleteSkill(Integer id) throws Exception {
+    public void deleteSkill(Integer id) throws InvalidValueException, OperationFailException {
         if (id < 0) {
-            throw new Exception("Invalid id value.");
-        } else
-            ioSkills.delete(id);
+            throw new InvalidValueException("Invalid id value.");
+        } else {
+            try {
+                ioSkills.delete(id);
+            } catch (IOException e) {
+                throw new OperationFailException("Skill failed to be deleted.");
+            }
+        }
     }
 }

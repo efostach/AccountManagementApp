@@ -15,32 +15,25 @@ public class JavaIOSkillsRepositoryImpl implements SkillRepository {
 
     private static String file = "src/main/resources/files/skill.txt";
 
-    public Skill getById(Integer id) {
+    public Skill getById(Integer id) throws FileNotFoundException {
         Iterator iterator = stringToSkill().iterator();
         Skill result = null;
         while (iterator.hasNext()) {
             Skill skill = (Skill) iterator.next();
-            if (id == skill.getId()) {
+            if (id.equals(skill.getId())) {
                 result = skill;
             }
         }
         return result;
     }
 
-    public List<Skill> getAll() {
+    public List<Skill> getAll() throws FileNotFoundException {
         return stringToSkill();
     }
 
-    public Skill create(Skill skill) {
-        try {
-            skill.setId(getIncrementedId(file));
-            writeDataToFile(file, skill.toString());
-
-        } catch (IOException e) {
-            new FileNotFoundException("File not found : " + e);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    public Skill create(Skill skill) throws IOException {
+        skill.setId(getIncrementedId(file));
+        writeDataToFile(file, skill.toString());
         return skill;
     }
 
@@ -48,31 +41,22 @@ public class JavaIOSkillsRepositoryImpl implements SkillRepository {
         return null;
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id) throws IOException {
         Iterator iterator = stringToSkill().iterator();
 
-        try {
-            clearFile(file);
-            while (iterator.hasNext()) {
-                Skill skill = (Skill) iterator.next();
-                if (id != skill.getId()) {
-                    writeDataToFile(file, skill.toString());
-                }
+        clearFile(file);
+        while (iterator.hasNext()) {
+            Skill skill = (Skill) iterator.next();
+            if (!id.equals(skill.getId())) {
+                writeDataToFile(file, skill.toString());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
-    private List<Skill> stringToSkill() {
+    private List<Skill> stringToSkill() throws FileNotFoundException {
         List<Skill> skillSet = new ArrayList<>();
-        Iterator iterator = null;
-
-        try {
-            iterator = readDataFromFile(file).iterator();
-        } catch (FileNotFoundException e) {
-            new FileNotFoundException("File not found : " + e);
-        }
+        Iterator iterator = readDataFromFile(file).iterator();
 
         while (iterator.hasNext()) {
             String element = (String) iterator.next();

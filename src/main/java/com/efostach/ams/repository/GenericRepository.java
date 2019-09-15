@@ -1,14 +1,16 @@
 package com.efostach.ams.repository;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public interface GenericRepository<T,ID>{
 
-    T getById(ID id);
+    T getById(ID id) throws FileNotFoundException;
 
-    List<T> getAll();
+    List<T> getAll() throws FileNotFoundException;
 
-    T create(T t);
+    T create(T t) throws Exception;
 
     T update(T t);
 }

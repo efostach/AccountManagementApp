@@ -68,8 +68,6 @@ public class Developer implements Serializable {
         return this.skillSet;
     }
 
-
-
     @Override
     public String toString(){
         return new StringBuilder().append(id).append(",")

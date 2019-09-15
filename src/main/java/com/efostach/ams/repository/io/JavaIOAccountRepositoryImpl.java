@@ -16,7 +16,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
     private static String file = "src/main/resources/files/account.txt";
 
-    public Account getById(Integer id) {
+    public Account getById(Integer id) throws FileNotFoundException {
         Iterator iterator = stringToAccount().iterator();
         Account result = null;
         while (iterator.hasNext()) {
@@ -28,7 +28,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
         return result;
     }
 
-    public List<Account> getAll() {
+    public List<Account> getAll() throws FileNotFoundException {
         return stringToAccount();
     }
 
@@ -46,17 +46,10 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
         return null;
     }
 
-    private List<Account> stringToAccount() {
+    private List<Account> stringToAccount() throws FileNotFoundException {
         List<Account> accountSet = new ArrayList<>();
-        Iterator iterator = null;
+        Iterator iterator = readDataFromFile(file).iterator();
 
-        try {
-            iterator = readDataFromFile(file).iterator();
-        } catch (FileNotFoundException e) {
-           System.out.println("File not found : " + e);
-        }
-
-        assert iterator != null;
         while (iterator.hasNext()) {
             String element = (String) iterator.next();
             String[] attributes = element.split(REGEX);

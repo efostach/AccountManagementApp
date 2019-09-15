@@ -27,7 +27,7 @@ class IOUtil {
         }
     }
 
-    static Integer getIncrementedId(String filePath) throws Exception {
+    static Integer getIncrementedId(String filePath) throws FileNotFoundException {
         List<String> elements = readDataFromFile(filePath);
 
         if (elements.size() > 0) {

@@ -1,6 +1,10 @@
 package com.efostach.ams.view;
 
 import com.efostach.ams.controller.DeveloperController;
+import com.efostach.ams.controller.exceptions.EmptyFileException;
+import com.efostach.ams.controller.exceptions.InvalidValueException;
+import com.efostach.ams.controller.exceptions.ObjectNotFoundException;
+import com.efostach.ams.controller.exceptions.OperationFailException;
 import com.efostach.ams.model.Developer;
 
 import java.util.Iterator;
@@ -15,32 +19,32 @@ public class DeveloperView {
             while (iterator.hasNext()){
                 printDeveloper((Developer) iterator.next());
             }
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (EmptyFileException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     void findDeveloperById(String id){
         try {
             printDeveloper(devController.findDeveloperById(Integer.valueOf(id)));
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (InvalidValueException | OperationFailException | ObjectNotFoundException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     void createDeveloper(String firstName, String lastName, String address){
         try {
             printDeveloper(devController.createDeveloper(firstName, lastName, address));
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (OperationFailException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     void deleteDeveloper(String id){
         try {
             devController.deleteDeveloper(Integer.valueOf(id));
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (InvalidValueException | OperationFailException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 

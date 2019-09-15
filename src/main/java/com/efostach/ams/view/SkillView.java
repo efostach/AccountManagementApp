@@ -1,6 +1,10 @@
 package com.efostach.ams.view;
 
 import com.efostach.ams.controller.SkillController;
+import com.efostach.ams.controller.exceptions.EmptyFileException;
+import com.efostach.ams.controller.exceptions.InvalidValueException;
+import com.efostach.ams.controller.exceptions.ObjectNotFoundException;
+import com.efostach.ams.controller.exceptions.OperationFailException;
 import com.efostach.ams.model.Skill;
 
 import java.util.Iterator;
@@ -16,32 +20,32 @@ public class SkillView {
             while (iterator.hasNext()){
                 printDeveloper((Skill) iterator.next());
             }
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (EmptyFileException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     void findSkillById(String id){
         try {
             printDeveloper(controller.findSkillById(Integer.valueOf(id)));
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (InvalidValueException | OperationFailException | ObjectNotFoundException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     void createSkill(String name){
         try {
             printDeveloper(controller.createSkill(name));
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (OperationFailException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     void deleteSkill(String id){
         try {
             controller.deleteSkill(Integer.valueOf(id));
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (InvalidValueException | OperationFailException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
