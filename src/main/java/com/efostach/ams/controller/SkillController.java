@@ -6,6 +6,7 @@ import com.efostach.ams.controller.exceptions.ObjectNotFoundException;
 import com.efostach.ams.controller.exceptions.OperationFailException;
 import com.efostach.ams.model.Skill;
 import com.efostach.ams.repository.io.JavaIOSkillsRepositoryImpl;
+import com.efostach.ams.service.SkillService;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.List;
 public class SkillController {
 
     private JavaIOSkillsRepositoryImpl ioSkills = new JavaIOSkillsRepositoryImpl();
+    private SkillService skillService = new SkillService();
 
     public List<Skill> showSkills() throws EmptyFileException {
         List<Skill> listSkills = null;
@@ -63,7 +65,9 @@ public class SkillController {
             throw new InvalidValueException("Invalid id value.");
         } else {
             try {
-                ioSkills.delete(id);
+                if(!skillService.deleteSkill(id)){
+                    throw new OperationFailException("Skill assigned to Developers and can't be deleted.");
+                }
             } catch (IOException e) {
                 throw new OperationFailException("Skill failed to be deleted.");
             }

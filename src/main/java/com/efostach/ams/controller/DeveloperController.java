@@ -13,6 +13,7 @@ import java.util.List;
 
 public class DeveloperController {
     private JavaIODeveloperRepositoryImpl ioDevelopers = new JavaIODeveloperRepositoryImpl();
+    //private SkillService skillService = new SkillService();
 
     public List<Developer> showDevelopers() throws EmptyFileException {
         List<Developer> listDevelopers = null;

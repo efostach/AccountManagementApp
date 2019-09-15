@@ -51,6 +51,7 @@ public class DeveloperView {
     private void printDeveloper(Developer developer){
         System.out.println("Id: " + developer.getId()
                 + "\tName: " + developer.getFirstName() + " " + developer.getLastName()
-                + "\tAddress: " + developer.getAddress());
+                + "\tAddress: " + developer.getAddress()
+                + "\t Skills: " + developer.getSkillSet());
     }
 }
