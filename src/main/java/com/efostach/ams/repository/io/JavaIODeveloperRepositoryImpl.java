@@ -70,9 +70,8 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
             dev.setFirstName(attributes[1]);
             dev.setLastName(attributes[2]);
             dev.setAddress(attributes[3]);
-            if(!attributes[4].equals("null")) {
-                dev.setAccountId(Integer.valueOf(attributes[4]));
-            }
+            dev.setAccountId(Integer.valueOf(attributes[4]));
+
             for(int i = 5; i < attributes.length; i++) {
                 dev.setSkill(Integer.valueOf(attributes[i]));
             }

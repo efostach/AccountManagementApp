@@ -12,13 +12,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import static com.efostach.ams.controller.ControllerUtil.getIntegerValue;
+
 public class SkillController {
 
     private JavaIOSkillsRepositoryImpl ioSkills = new JavaIOSkillsRepositoryImpl();
     private SkillService skillService = new SkillService();
 
     public List<Skill> showSkills() throws EmptyFileException {
-        List<Skill> listSkills = null;
+        List<Skill> listSkills;
         try {
             listSkills = ioSkills.getAll();
             if (ioSkills.getAll().isEmpty())
@@ -33,7 +35,7 @@ public class SkillController {
         if (id < 0) {
             throw new InvalidValueException("Invalid id value.");
         } else {
-            Skill result = null;
+            Skill result;
             try {
                 result = ioSkills.getById(id);
                 if (result == null) {
@@ -61,11 +63,11 @@ public class SkillController {
     }
 
     public void deleteSkill(Integer id) throws InvalidValueException, OperationFailException {
-        if (id < 0) {
+        if (id != null && id < 0) {
             throw new InvalidValueException("Invalid id value.");
         } else {
             try {
-                if(!skillService.deleteSkill(id)){
+                if (!skillService.deleteSkill(id)) {
                     throw new OperationFailException("Skill assigned to Developers and can't be deleted.");
                 }
             } catch (IOException e) {
@@ -73,4 +75,17 @@ public class SkillController {
             }
         }
     }
+
+    public boolean checkIfSkillsExist() throws EmptyFileException {
+        boolean result = false;
+        try {
+            if (ioSkills.getAll() != null) {
+                result = true;
+            }
+        } catch (FileNotFoundException e) {
+            throw new EmptyFileException("No skills exist.");
+        }
+        return result;
+    }
+
 }

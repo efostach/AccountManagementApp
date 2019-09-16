@@ -8,6 +8,7 @@ import com.efostach.ams.controller.exceptions.OperationFailException;
 import com.efostach.ams.model.Developer;
 
 import java.util.Iterator;
+import java.util.Set;
 
 public class DeveloperView {
 
@@ -24,25 +25,26 @@ public class DeveloperView {
         }
     }
 
-    void findDeveloperById(String id){
+    void findDeveloperById(Integer id){
         try {
-            printDeveloper(devController.findDeveloperById(Integer.valueOf(id)));
+            printDeveloper(devController.findDeveloperById(id));
         } catch (InvalidValueException | OperationFailException | ObjectNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    void createDeveloper(String firstName, String lastName, String address){
+    void createDeveloper(String firstName, String lastName, String address, String title, String data, Set<Integer> skillIds){
         try {
-            printDeveloper(devController.createDeveloper(firstName, lastName, address));
+
+            printDeveloper(devController.createDeveloper(firstName, lastName, address, title, data, skillIds));
         } catch (OperationFailException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    void deleteDeveloper(String id){
+    void deleteDeveloper(Integer id){
         try {
-            devController.deleteDeveloper(Integer.valueOf(id));
+            devController.deleteDeveloper(id);
         } catch (InvalidValueException | OperationFailException ex) {
             System.out.println(ex.getMessage());
         }
@@ -52,6 +54,7 @@ public class DeveloperView {
         System.out.println("Id: " + developer.getId()
                 + "\tName: " + developer.getFirstName() + " " + developer.getLastName()
                 + "\tAddress: " + developer.getAddress()
-                + "\t Skills: " + developer.getSkillSet());
+                + "\tAccount: " + developer.getAccountId()
+                + "\tSkills: " + developer.getSkillSet());
     }
 }

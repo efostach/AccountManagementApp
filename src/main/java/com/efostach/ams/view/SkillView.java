@@ -14,6 +14,18 @@ public class SkillView {
 
     private SkillController controller = new SkillController();
 
+    boolean checkIfSkillsExist(){
+        boolean result = false;
+        try {
+            if (controller.checkIfSkillsExist()) {
+                result = true;
+            }
+        } catch (EmptyFileException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+
     void showSkills(){
         try {
             Iterator iterator = controller.showSkills().iterator();
@@ -25,9 +37,9 @@ public class SkillView {
         }
     }
 
-    void findSkillById(String id){
+    void findSkillById(Integer id){
         try {
-            printDeveloper(controller.findSkillById(Integer.valueOf(id)));
+            printDeveloper(controller.findSkillById(id));
         } catch (InvalidValueException | OperationFailException | ObjectNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
@@ -41,9 +53,9 @@ public class SkillView {
         }
     }
 
-    void deleteSkill(String id){
+    void deleteSkill(Integer id){
         try {
-            controller.deleteSkill(Integer.valueOf(id));
+            controller.deleteSkill(id);
         } catch (InvalidValueException | OperationFailException ex) {
             System.out.println(ex.getMessage());
         }

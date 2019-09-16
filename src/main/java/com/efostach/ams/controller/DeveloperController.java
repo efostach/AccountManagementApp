@@ -6,17 +6,18 @@ import com.efostach.ams.controller.exceptions.ObjectNotFoundException;
 import com.efostach.ams.controller.exceptions.OperationFailException;
 import com.efostach.ams.model.Developer;
 import com.efostach.ams.repository.io.JavaIODeveloperRepositoryImpl;
+import com.efostach.ams.service.DeveloperService;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public class DeveloperController {
     private JavaIODeveloperRepositoryImpl ioDevelopers = new JavaIODeveloperRepositoryImpl();
-    //private SkillService skillService = new SkillService();
 
     public List<Developer> showDevelopers() throws EmptyFileException {
-        List<Developer> listDevelopers = null;
+        List<Developer> listDevelopers;
         try {
             listDevelopers = ioDevelopers.getAll();
             if (ioDevelopers.getAll().isEmpty())
@@ -31,7 +32,7 @@ public class DeveloperController {
         if (id < 0) {
             throw new InvalidValueException("Invalid id value.");
         } else {
-            Developer result = null;
+            Developer result;
             try {
                 result = ioDevelopers.getById(id);
                 if (result == null) {
@@ -45,19 +46,17 @@ public class DeveloperController {
 
     }
 
-    public Developer createDeveloper(String firstName, String lastName, String address) throws OperationFailException {
-        Developer dev = new Developer();
-        dev.setFirstName(firstName);
-        dev.setLastName(lastName);
-        dev.setAddress(address);
-
-        Developer createdDeveloper;
+    public Developer createDeveloper(String firstName, String lastName,
+                                     String address, String title,
+                                     String data, Set<Integer> skillIds) throws OperationFailException {
+        DeveloperService devService = new DeveloperService();
+        Developer dev;
         try {
-            createdDeveloper = ioDevelopers.create(dev);
+            dev = devService.createDeveloper(firstName, lastName, address, title, data, skillIds);
         } catch (IOException e) {
             throw new OperationFailException("Developer failed to be created.");
         }
-        return createdDeveloper;
+        return dev;
     }
 
     public void deleteDeveloper(Integer id) throws InvalidValueException, OperationFailException {

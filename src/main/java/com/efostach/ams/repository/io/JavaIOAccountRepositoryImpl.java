@@ -5,6 +5,7 @@ import com.efostach.ams.model.AccountStatus;
 import com.efostach.ams.repository.AccountRepository;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,13 +33,9 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
         return stringToAccount();
     }
 
-    public Account create(Account account) {
-        try {
-            account.setId(getIncrementedId(file));
-            writeDataToFile(file, account.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Account create(Account account) throws IOException {
+        account.setId(getIncrementedId(file));
+        writeDataToFile(file, account.toString());
         return account;
     }
 
@@ -52,7 +49,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
         while (iterator.hasNext()) {
             String element = (String) iterator.next();
-            String[] attributes = element.split(REGEX);
+            String[] attributes = element.split(",");
 
             Account account = new Account();
             account.setId(Integer.valueOf(attributes[0]));

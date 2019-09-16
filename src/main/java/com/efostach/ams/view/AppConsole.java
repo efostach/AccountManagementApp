@@ -1,22 +1,29 @@
 package com.efostach.ams.view;
 
+import com.efostach.ams.controller.exceptions.InvalidValueException;
+
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
+
+import static com.efostach.ams.controller.ControllerUtil.getIntegerValue;
 
 public class AppConsole {
-    AccountView aw = new AccountView();
-    DeveloperView dw = new DeveloperView();
-    SkillView sw = new SkillView();
+    private AccountView aw = new AccountView();
+    private DeveloperView dw = new DeveloperView();
+    private SkillView sw = new SkillView();
 
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
-    public static void printGeneralMenu() {
+    private void printGeneralMenu() {
         System.out.println("\nFor choosing an action, please, enter the number.");
         System.out.println("1. Developers");
         System.out.println("2. Skills");
-        System.out.println("3. Exit \n");
+        System.out.println("3. Accounts");
+        System.out.println("4. Exit \n");
     }
 
-    public static void printDeveloperSubGeneralMenu() {
+    private void printDeveloperSubGeneralMenu() {
         System.out.println("\nChoose necessary operation:");
         System.out.println("1. Show All Developers");
         System.out.println("2. Create Developer");
@@ -25,7 +32,7 @@ public class AppConsole {
         System.out.println("5. Go Back\n");
     }
 
-    public static void printSkillSubGeneralMenu() {
+    private void printSkillSubGeneralMenu() {
         System.out.println("\nChoose necessary operation:");
         System.out.println("1. Show All Skills");
         System.out.println("2. Create Skill");
@@ -34,18 +41,28 @@ public class AppConsole {
         System.out.println("5. Go Back\n");
     }
 
-    public static void printWrongSelection(){
+    private void printAccountSubGeneralMenu() {
+        System.out.println("\nChoose necessary operation:");
+        System.out.println("1. Show All Accounts");
+        System.out.println("2. Go Back\n");
+    }
+
+    private void printWrongSelection() {
         System.out.println("Oops, it's wrong value.\n");
     }
 
-    public static void printInputParameter(String name) {
+    private void printInputParameter(String name) {
         System.out.println("\nEnter " + name + ":");
     }
 
-    public void run(){
+    private void printMessage(String message) {
+        System.out.println("\n" + message + "\n");
+    }
+
+    public void run() {
         printGeneralMenu();
 
-        switch (scanner.nextLine()){
+        switch (scanner.nextLine()) {
             default: {
                 printWrongSelection();
                 run();
@@ -62,6 +79,11 @@ public class AppConsole {
                 break;
             }
             case "3": {
+                printAccountSubGeneralMenu();
+                goToAccountSubGeneralMenu();
+                break;
+            }
+            case "4": {
                 break;
             }
         }
@@ -80,22 +102,32 @@ public class AppConsole {
                 break;
             }
             case "2": {
-                printInputParameter("First Name, Last Name, Address");
-                dw.createDeveloper(scanner.nextLine(),
-                        scanner.nextLine(),
-                        scanner.nextLine());
+                printInputParameter("First Name, Last Name, Address, Title, Additional Information");
+                String firstName = getFieldInputValue();
+                String lastName = getFieldInputValue();
+                String address = getFieldInputValue();
+                String title = getFieldInputValue();
+                String data = getFieldInputValue();
+                Set<Integer> skillIds = new HashSet<>();
+                if (sw.checkIfSkillsExist()) {
+                    printMessage("Choose Skills to assign one or more to Developer. For complete creation, please, enter 0.");
+                    sw.showSkills();
+                    printInputParameter("ID");
+                    skillIds = getSeveralIntegerValues();
+                }
+                dw.createDeveloper(firstName, lastName, address, title, data, skillIds);
                 run();
                 break;
             }
             case "3": {
                 printInputParameter("ID");
-                dw.findDeveloperById(scanner.nextLine());
+                dw.findDeveloperById(transferToIntegerValue());
                 run();
                 break;
             }
             case "4": {
                 printInputParameter("ID");
-                dw.deleteDeveloper(scanner.nextLine());
+                dw.deleteDeveloper(transferToIntegerValue());
                 run();
                 break;
             }
@@ -120,19 +152,19 @@ public class AppConsole {
             }
             case "2": {
                 printInputParameter("Skill Name");
-                sw.createSkill(scanner.nextLine());
+                sw.createSkill(getFieldInputValue());
                 run();
                 break;
             }
             case "3": {
                 printInputParameter("ID");
-                sw.findSkillById(scanner.nextLine());
+                sw.findSkillById(transferToIntegerValue());
                 run();
                 break;
             }
             case "4": {
                 printInputParameter("ID");
-                sw.deleteSkill(scanner.nextLine());
+                sw.deleteSkill(transferToIntegerValue());
                 run();
                 break;
             }
@@ -140,5 +172,59 @@ public class AppConsole {
                 break;
             }
         }
+    }
+
+    private void goToAccountSubGeneralMenu() {
+        switch (scanner.nextLine()) {
+            default: {
+                printWrongSelection();
+                run();
+                break;
+            }
+            case "1": {
+                aw.showAccounts();
+                run();
+                break;
+            }
+            case "2": {
+                break;
+            }
+        }
+    }
+
+    private Set<Integer> getSeveralIntegerValues() {
+        Set<Integer> result = new HashSet<>();
+        Integer input = null;
+        do {
+            do {
+                try {
+                    input = getIntegerValue(scanner.nextLine());
+                } catch (InvalidValueException ex) {
+                    ex.getMessage();
+                }
+            } while (input == null);
+            result.add(input);
+        } while (!input.equals(0));
+        return result;
+    }
+
+    private Integer transferToIntegerValue() {
+        Integer input = null;
+        do {
+            try {
+                input = getIntegerValue(scanner.nextLine());
+            } catch (InvalidValueException ex) {
+                ex.getMessage();
+            }
+        } while (input == null);
+        return input;
+    }
+
+    private String getFieldInputValue() {
+        String input;
+        do {
+            input = scanner.nextLine();
+        } while (input.equals(""));
+        return input;
     }
 }

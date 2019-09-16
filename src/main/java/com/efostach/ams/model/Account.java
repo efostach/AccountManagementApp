@@ -12,7 +12,6 @@ public class Account implements Serializable {
         this.id = null;
         this.title = null;
         this.data = null;
-        this.status = status.ACTIVE;
     }
 
     public void setId(Integer id){
@@ -31,8 +30,8 @@ public class Account implements Serializable {
         this.status = status;
     }
 
-    public void setActiveAccount(){
-        this.status = status.ACTIVE;
+    public void setAccountStatus(AccountStatus status){
+        this.status = status;
     }
 
     public Integer getId(){
@@ -45,6 +44,10 @@ public class Account implements Serializable {
 
     public String getTitle(){
         return this.title;
+    }
+
+    public String getData(){
+        return this.data;
     }
 
     @Override

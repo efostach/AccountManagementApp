@@ -1,2 +1,2 @@
-2,Helen,Fostach,Tokyo,null,[3,4]
-3,Ivan,Ivanov,Minato,1,[1]
+1,Ivan,Ivanov,Moscow,1,[1]
+2,Petr,Petrov,Kiev,2,[1, 3, 4]
